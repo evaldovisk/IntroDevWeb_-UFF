@@ -32,7 +32,7 @@ public class AdministradorDAO {
             sql.setString(1, administrador.getNome()); 
             sql.setString(2, administrador.getCpf());  
             sql.setString(3, administrador.getSenha()); 
-            sql.setString(4,"S"); 
+            sql.setString(4, "S" );
             sql.setString(5, administrador.getEndereco()); 
 
             sql.executeUpdate();
@@ -153,5 +153,32 @@ public class AdministradorDAO {
             conexao.closeConexao();
         }
     }
+    
+    public Administrador getAdministradorByCpf(String cpf) throws Exception {
+    Conexao conexao = new Conexao();
+    try {
+        Administrador administrador = null;
+        String sqlQuery = "SELECT * FROM Administrador WHERE cpf = ? LIMIT 1";
+        PreparedStatement sql = conexao.getConexao().prepareStatement(sqlQuery);
+        sql.setString(1, cpf);
+        
+        ResultSet resultado = sql.executeQuery();
+        if (resultado != null && resultado.next()) {
+            administrador = new Administrador();
+            administrador.setId(Integer.parseInt(resultado.getString("ID")));
+            administrador.setNome(resultado.getString("NOME"));
+            administrador.setCpf(resultado.getString("CPF"));
+            administrador.setEndereco(resultado.getString("ENDERECO"));
+            administrador.setSenha(resultado.getString("SENHA"));
+        }
+        
+        return administrador;
+    } catch (SQLException e) {
+        throw new RuntimeException("Erro ao consultar administrador por CPF: " + e.getMessage());
+    } finally {
+        conexao.closeConexao();
+    }
+}
+
 
 }

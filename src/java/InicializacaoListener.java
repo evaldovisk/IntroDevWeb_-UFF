@@ -1,6 +1,9 @@
 
+import controller.admin.TurmaController;
 import entidade.Aluno;
 import entidade.Administrador;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.AlunoDAO;
 import model.AdministradorDAO;
 import javax.servlet.ServletContextEvent;
@@ -9,7 +12,7 @@ import javax.servlet.annotation.WebListener;
 
 @WebListener
 public class InicializacaoListener implements ServletContextListener {
-
+    
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         Aluno aluno = new Aluno();
@@ -44,7 +47,9 @@ public class InicializacaoListener implements ServletContextListener {
 
         AdministradorDAO administradorDAO = new AdministradorDAO();
         try {
-            if (administradorDAO.getAdministrador(administrador.getId()) == null) {
+
+
+            if (administradorDAO.getAdministradorByCpf(administrador.getCpf()) == null) {
                 administradorDAO.Inserir(administrador);
                 System.out.println("Administrador inserido com sucesso.");
             } else {
