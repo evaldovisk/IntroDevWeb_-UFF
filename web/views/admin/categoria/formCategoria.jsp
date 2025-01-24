@@ -16,10 +16,10 @@
 
     <body>
 
-        <div class="container">
+        <div style="padding: 40px 200px 0px 200px">
             <jsp:include page="../../comum/menu.jsp" />
-            <div class="row mt-5">
-                <div class="col-sm-4 offset-3">
+            <div>
+                <div>
                     <%
                         Categoria categoria = (Categoria) request.getAttribute("categoria");
                         String acao = (String) request.getAttribute("acao");

@@ -1,6 +1,7 @@
 package filtro;
 
 import entidade.Administrador;
+import entidade.Aluno;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -12,24 +13,31 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter(filterName = "filtroRestrito", urlPatterns = {"/admin/*"})
-public class filtroRestrito implements Filter {
+@WebFilter(filterName = "filtroRestrito", urlPatterns = {"/admin/*", "/aluno/*"})  // Aplique para admin e aluno
+public class FiltroRestrito implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
 
-        Administrador administrador = (Administrador)((HttpServletRequest) request).getSession().getAttribute("administrador");
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        if ((administrador != null) && (!((String) administrador.getNome()).isEmpty())) {
+
+        Administrador administrador = (Administrador) httpRequest.getSession().getAttribute("administrador");
+        Aluno aluno = (Aluno) httpRequest.getSession().getAttribute("aluno");
+
+        if ((administrador != null && !administrador.getNome().isEmpty()) || 
+            (aluno != null && !aluno.getNome().isEmpty())) {
             chain.doFilter(request, response);
         } else {
-            ((HttpServletResponse) response).sendRedirect("http://localhost:8080/aplicacaoMVC/home");
+            httpResponse.sendRedirect("http://localhost:8080/aplicacaoMVC/home"); 
         }
     }
+
     @Override
-    public void init(FilterConfig arg0) throws ServletException {
+    public void init(FilterConfig filterConfig) throws ServletException {
     }
 
     @Override

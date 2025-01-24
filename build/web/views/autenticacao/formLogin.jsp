@@ -10,8 +10,8 @@
         <link href="http://localhost:8080/aplicacaoMVC/views/bootstrap/bootstrap.min.css"  rel="stylesheet">
     </head>
     <body>
-        <div class="container">
-            <jsp:include page="../comum/menu.jsp" />
+        <div style="padding: 40px 200px 0px 200px">
+            <%--<jsp:include page="../comum/menu.jsp" />--%>
             <div class="col-sm-6 offset-3 mt-5">
 
                 <h3>Login</h3>
@@ -32,13 +32,17 @@
                         <label for="senha" class="form-label">Senha</label>
                         <input type="password" name="senha" value="123" class="form-control">
                     </div>
-                    <div class="row">
-                        <div class="col-sm-2">
+                    <div style="display: flex; gap: 15px; flex-direction: row;">
+                        <div >
                             <input type="submit" value="Enviar" class="btn btn-primary">  
                         </div>
-                        <div class="col-sm-6">                                
-                            <h6>Não possui acesso <a href="/aplicacaoMVC/RegistrarController">Registre-se aqui</a></h6>
+                        <div>
+                            <a href="<%= request.getContextPath()%>" class="btn btn-primary">Voltar</a>  
                         </div>
+
+                        <!--                        <div class="col-sm-6">                                
+                                                    <h6>Não possui acesso <a href="/aplicacaoMVC/RegistrarController">Registre-se aqui</a></h6>-->
+                    </div>
                 </form>
             </div>
         </div>

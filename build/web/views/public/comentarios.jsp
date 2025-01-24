@@ -12,7 +12,7 @@
         <link href="http://localhost:8080/aplicacaoMVC/views/bootstrap/bootstrap.min.css"  rel="stylesheet">
     </head>
     <body>
-        <div class="container">
+        <div style="padding: 40px 200px 0px 200px">
             <jsp:include page="../comum/menu.jsp" />
             <div class="mt-5">
                 <h1>Comentários dos usuários</h1>

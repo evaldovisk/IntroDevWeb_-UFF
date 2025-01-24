@@ -10,11 +10,11 @@
          <link href="http://localhost:8080/aplicacaoMVC/views/bootstrap/bootstrap.min.css"  rel="stylesheet">
     </head>
     <body>
-        <div class="container">
+        <div>
             <jsp:include page="../comum/menu.jsp" />
-            <div class="mt-5">
-                <h3>Seja Bem-vindo ao blog Blogado</h3>
-                <h4>Aqui comentamos sobre vários assuntos</h4>
+            <div style="padding: 40px 200px 0px 200px">
+                <h3>Seja Bem-vindo ao Sistema de Gestão de Educacional</h3>
+                <h4>by Evaldo F. Silva e Monique Elen S. Souza </h4>
             </div>
         </div>
        <script src="http://localhost:8080/aplicacaoMVC/views/bootstrap/bootstrap.bundle.min.js"></script>

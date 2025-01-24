@@ -21,19 +21,23 @@ CREATE TABLE IF NOT EXISTS `Administrador` (
  */
 public class AdministradorDAO {
 
-    public void Inserir(Administrador Administrador) throws Exception {
+    public void Inserir(Administrador administrador) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Administrador (nome, cpf, endereco, senha)"
-                    + " VALUES (?,?,?,?)");
-            sql.setString(1, Administrador.getNome());
-            sql.setString(2, Administrador.getCpf());
-            sql.setString(3, Administrador.getEndereco());
-            sql.setString(4, Administrador.getSenha());
+            String sqlQuery = "INSERT INTO administrador (nome, cpf, senha, aprovado, endereco) "
+                    + "VALUES (?, ?, ?, 'N', ?)";
+
+            PreparedStatement sql = conexao.getConexao().prepareStatement(sqlQuery);
+
+            sql.setString(1, administrador.getNome()); 
+            sql.setString(2, administrador.getCpf());  
+            sql.setString(3, administrador.getSenha()); 
+            sql.setString(4, administrador.getEndereco()); 
+
             sql.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException();
+            throw new RuntimeException("Erro ao inserir administrador: " + e.getMessage());
         } finally {
             conexao.closeConexao();
         }

@@ -11,9 +11,9 @@
         <link href="http://localhost:8080/aplicacaoMVC/views/bootstrap/bootstrap.min.css"  rel="stylesheet">
     </head>
     <body>
-        <div class="container">
+        <div >
             <jsp:include page="../../comum/menu.jsp" />
-            <div class="mt-5">
+            <div style="padding: 40px 200px 0px 200px">
 
                 <h1>Área Restrita</h1>
                 <%

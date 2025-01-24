@@ -20,8 +20,8 @@ public class MostrarComentarios extends HttpServlet {
             throws ServletException, IOException {
                    ComentarioDAO comentarioDAO = new ComentarioDAO();
             try {
-                ArrayList<Comentario> listaComentarios = comentarioDAO.getAll();
-                request.setAttribute("listaComentarios", listaComentarios);
+//                ArrayList<Comentario> listaComentarios = comentarioDAO.getAll();
+//                request.setAttribute("listaComentarios", listaComentarios);
                 RequestDispatcher rd = request.getRequestDispatcher("/views/public/comentarios.jsp");
                 rd.forward(request, response);
                 
