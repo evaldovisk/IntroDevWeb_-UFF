@@ -95,6 +95,26 @@ public class AlunoDAO {
         int rowsAffected = stmt.executeUpdate();
         return rowsAffected > 0;
     }
+    
+        public boolean addFirstAluno(Aluno aluno) throws SQLException {
+        Conexao conexao = new Conexao();
+        String sql = "INSERT INTO alunos (id, nome, email, celular, cpf, senha, endereco, cidade, bairro, cep) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement stmt = conexao.getConexao().prepareStatement(sql);
+        
+        stmt.setInt(1, aluno.getId() );
+        stmt.setString(2, aluno.getNome());
+        stmt.setString(3, aluno.getEmail());
+        stmt.setString(4, aluno.getCelular());
+        stmt.setString(5, aluno.getCpf());
+        stmt.setString(6, aluno.getSenha());
+        stmt.setString(7, aluno.getEndereco());
+        stmt.setString(8, aluno.getCidade());
+        stmt.setString(9, aluno.getBairro());
+        stmt.setString(10, aluno.getCep());
+
+        int rowsAffected = stmt.executeUpdate();
+        return rowsAffected > 0;
+    }
 
     public boolean addAluno(Aluno aluno) throws SQLException {
         Conexao conexao = new Conexao();

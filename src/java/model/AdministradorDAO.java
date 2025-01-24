@@ -25,14 +25,15 @@ public class AdministradorDAO {
         Conexao conexao = new Conexao();
         try {
             String sqlQuery = "INSERT INTO administrador (nome, cpf, senha, aprovado, endereco) "
-                    + "VALUES (?, ?, ?, 'N', ?)";
+                    + "VALUES (?, ?, ?, ?, ?)";
 
             PreparedStatement sql = conexao.getConexao().prepareStatement(sqlQuery);
 
             sql.setString(1, administrador.getNome()); 
             sql.setString(2, administrador.getCpf());  
             sql.setString(3, administrador.getSenha()); 
-            sql.setString(4, administrador.getEndereco()); 
+            sql.setString(4,"S"); 
+            sql.setString(5, administrador.getEndereco()); 
 
             sql.executeUpdate();
 
