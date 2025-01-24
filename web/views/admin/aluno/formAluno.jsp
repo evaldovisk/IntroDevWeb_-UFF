@@ -1,5 +1,4 @@
 <%@page import="entidade.Aluno"%>
-<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -8,64 +7,80 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="#">
-        <title>Lista de Alunos</title>
+        <title>Aluno</title>
         <link href="http://localhost:8080/aplicacaoMVC/views/bootstrap/bootstrap.min.css"  rel="stylesheet">
     </head>
     <body>
         <jsp:include page="../../comum/menu.jsp"/>
 
-        <div style="padding: 40px 200px 0px 200px">
-            <div class="table-responsive">
+        <div class="container">
+            <div class="mt-5">
+                <%
+                    String id = request.getParameter("id");
 
-                <a href="<%= request.getContextPath()%>/admin/aluno/cadastrar" class="btn btn-primary mb-3">Incluir</a>
+                    Aluno aluno = new Aluno();
 
-                <h1>Lista de Alunos</h1>
-                <table class="table  table-hover">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Celular</th>
-                            <th>CPF</th>
-                            <th>Endereço</th>
-                            <th>Cidade</th>
-                            <th>Bairro</th>
-                            <th>CEP</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%
-                            ArrayList<Aluno> alunos = (ArrayList<Aluno>) request.getAttribute("Alunos");
-                            for (Aluno aluno : alunos) {
-                        %>
-                        <tr>
-                            <td><%= aluno.getId()%></td>
-                            <td><%= aluno.getNome()%></td>
-                            <td><%= aluno.getEmail()%></td>
-                            <td><%= aluno.getCelular()%></td>
-                            <td><%= aluno.getCpf()%></td>
-                            <td><%= aluno.getEndereco()%></td>
-                            <td><%= aluno.getCidade()%></td>
-                            <td><%= aluno.getBairro()%></td>
-                            <td><%= aluno.getCep()%></td>
-                            <td>
-                                <a href="<%= request.getContextPath()%>/admin/aluno/alterar?id=<%= aluno.getId()%>" class="btn btn-warning">Alterar</a>
-                                <form action="<%= request.getContextPath()%>/admin/aluno" method="post" style="display:inline;">
-                                    <input type="hidden" name="acao" value="excluir">
-                                    <input type="hidden" name="id" value="<%= aluno.getId()%>">
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este aluno?');">
-                                        Excluir
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        <%
-                            }
-                        %>
-                    </tbody>
-                </table>
+                    if (id != null) {
+                        aluno = (Aluno) request.getAttribute("alunoAlterar");
+                    }
+                %>
+
+                <h1><%= (id != null) ? "Alterar Aluno" : "Cadastrar Novo Aluno"%></h1>
+                <form action="<%= request.getContextPath()%>/admin/aluno?acao=<%= (id != null) ? "alterar" : "cadastrar"%>" method="post">
+                    <% if (id != null) {%>
+                    <input type="hidden" name="id" value="<%= aluno.getId()%>">
+                    <% }%>
+
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nome" name="nome" 
+                               value="<%= (id != null) ? aluno.getNome() : ""%>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" 
+                               value="<%= (id != null) ? aluno.getEmail() : ""%>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="celular" class="form-label">Celular</label>
+                        <input type="text" class="form-control" id="celular" name="celular" 
+                               value="<%= (id != null) ? aluno.getCelular() : ""%>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" id="cpf" name="cpf" 
+                               value="<%= (id != null) ? aluno.getCpf() : ""%>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="senha" name="senha" 
+                               value="<%= (id != null) ? aluno.getSenha() : ""%>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endereco" class="form-label">Endereço</label>
+                        <input type="text" class="form-control" id="endereco" name="endereco" 
+                               value="<%= (id != null) ? aluno.getEndereco() : ""%>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cidade" class="form-label">Cidade</label>
+                        <input type="text" class="form-control" id="cidade" name="cidade" 
+                               value="<%= (id != null) ? aluno.getCidade() : ""%>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="bairro" class="form-label">Bairro</label>
+                        <input type="text" class="form-control" id="bairro" name="bairro" 
+                               value="<%= (id != null) ? aluno.getBairro() : ""%>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cep" class="form-label">CEP</label>
+                        <input type="text" class="form-control" id="cep" name="cep" 
+                               value="<%= (id != null) ? aluno.getCep() : ""%>">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <%= (id != null) ? "Alterar" : "Cadastrar"%>
+                    </button>
+                </form>
             </div>
         </div>
 

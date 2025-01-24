@@ -23,7 +23,6 @@
                 <table class="table  table-hover">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Nome</th>
                             <th>Email</th>
                             <th>Celular</th>
@@ -39,9 +38,9 @@
                         <%
                             ArrayList<Aluno> alunos = (ArrayList<Aluno>) request.getAttribute("Alunos");
                             for (Aluno aluno : alunos) {
+                                    if(aluno.getId() == -1) continue;
                         %>
                         <tr>
-                            <td><%= aluno.getId()%></td>
                             <td><%= aluno.getNome()%></td>
                             <td><%= aluno.getEmail()%></td>
                             <td><%= aluno.getCelular()%></td>

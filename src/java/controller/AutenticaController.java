@@ -1,8 +1,8 @@
 package controller;
 
-
 import entidade.Administrador;
 import entidade.Aluno;
+import entidade.Professor;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.AdministradorDAO;
 import model.AlunoDAO;
+import model.ProfessorDAO;
 
 @WebServlet(name = "AutenticaController", urlPatterns = {"/AutenticaController"})
 public class AutenticaController extends HttpServlet {
@@ -41,29 +42,43 @@ public class AutenticaController extends HttpServlet {
         } else {
             Administrador administradorObtido = null;
             Aluno alunoObtido = null;
+            Professor professorObtido = null;
 
+            // Autenticação de Administrador
             Administrador administrador = new Administrador(cpf_user, senha_user);
             AdministradorDAO administradorDAO = new AdministradorDAO();
             try {
                 administradorObtido = administradorDAO.Logar(administrador);
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
-                throw new RuntimeException("Falha na query para Logar");
+                throw new RuntimeException("Falha na query para logar administrador");
             }
 
+            // Autenticação de Aluno
             Aluno aluno = new Aluno();
             aluno.setCpf(cpf_user);
             aluno.setSenha(senha_user);
             AlunoDAO alunoDAO = new AlunoDAO();
             try {
-                alunoObtido = alunoDAO.getAlunoByCpfSenha(aluno); 
+                alunoObtido = alunoDAO.getAlunoByCpfSenha(aluno);
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
                 throw new RuntimeException("Falha na query para logar aluno");
             }
 
+            // Autenticação de Professor
+            Professor professor = new Professor();
+            professor.setCpf(cpf_user);
+            professor.setSenha(senha_user);
+            ProfessorDAO professorDAO = new ProfessorDAO();
+            try {
+                professorObtido = professorDAO.getProfessorByCpfSenha(professor);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                throw new RuntimeException("Falha na query para logar professor");
+            }
 
-            if (administradorObtido.getId() != 0) {
+            if (administradorObtido != null && administradorObtido.getId() != 0) {
                 HttpSession session = request.getSession();
                 session.setAttribute("administrador", administradorObtido);
 
@@ -73,8 +88,15 @@ public class AutenticaController extends HttpServlet {
             } else if (alunoObtido != null && alunoObtido.getId() != 0) {
                 HttpSession session = request.getSession();
                 session.setAttribute("aluno", alunoObtido);
-                
+
                 rd = request.getRequestDispatcher("/aluno/dashboard");
+                rd.forward(request, response);
+
+            } else if (professorObtido != null && professorObtido.getId() != 0) {
+                HttpSession session = request.getSession();
+                session.setAttribute("professor", professorObtido);
+
+                rd = request.getRequestDispatcher("/professor/dashboard");
                 rd.forward(request, response);
 
             } else {

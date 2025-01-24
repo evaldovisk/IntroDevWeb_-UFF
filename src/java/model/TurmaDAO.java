@@ -40,6 +40,71 @@ public class TurmaDAO {
         return turmasMap;
     }
 
+    public Map<String, List<Turma>> getTurmasGroupByCodigo(int professorId) throws SQLException {
+        Map<String, List<Turma>> turmasMap = new HashMap<>();
+        Conexao conexao = new Conexao();
+
+        String sql = "SELECT * FROM turmas WHERE professor_id = ? ORDER BY codigo_turma";
+        PreparedStatement stmt = conexao.getConexao().prepareStatement(sql);
+
+        stmt.setInt(1, professorId);
+
+        ResultSet resultado = stmt.executeQuery();
+
+        if (resultado != null) {
+            while (resultado.next()) {
+                Turma turma = new Turma();
+                turma.setId(resultado.getInt("id"));
+                turma.setProfessorId(resultado.getInt("professor_id"));
+                turma.setDisciplinaId(resultado.getInt("disciplina_id"));
+                turma.setAlunoId(resultado.getInt("aluno_id"));
+                turma.setCodigoTurma(resultado.getString("codigo_turma"));
+                turma.setNota(resultado.getInt("nota"));
+
+                String codigoTurma = turma.getCodigoTurma();
+                turmasMap.computeIfAbsent(codigoTurma, k -> new ArrayList<>()).add(turma);
+            }
+        }
+
+        return turmasMap;
+    }
+
+    public Map<String, List<Turma>> getTurmasPorProfessorAgrupadasPorCodigo(int professorId) throws SQLException {
+        Map<String, List<Turma>> turmasMap = new HashMap<>();
+        Conexao conexao = new Conexao();
+
+        String sql = "SELECT * FROM turmas WHERE professor_id = ? ORDER BY codigo_turma";
+        PreparedStatement stmt = conexao.getConexao().prepareStatement(sql);
+
+        stmt.setInt(1, professorId);
+
+        ResultSet resultado = stmt.executeQuery();
+
+        if (resultado != null) {
+            while (resultado.next()) {
+                Turma turma = new Turma();
+                turma.setId(resultado.getInt("id"));
+                turma.setProfessorId(resultado.getInt("professor_id"));
+                turma.setDisciplinaId(resultado.getInt("disciplina_id"));
+                turma.setAlunoId(resultado.getInt("aluno_id"));
+                turma.setCodigoTurma(resultado.getString("codigo_turma"));
+                turma.setNota(resultado.getInt("nota"));
+
+                String codigoTurma = turma.getCodigoTurma();
+                turmasMap.computeIfAbsent(codigoTurma, k -> new ArrayList<>()).add(turma);
+            }
+        }
+
+        for (List<Turma> turmas : turmasMap.values()) {
+            for (Turma turma : turmas) {
+                Aluno aluno = new AlunoDAO().getAlunoById(turma.getAlunoId());
+                turma.setAlunoId(aluno.getId());
+            }
+        }
+
+        return turmasMap;
+    }
+
     public Turma getTurmaByCodigo(String codigoTurma) throws SQLException {
         Conexao conexao = new Conexao();
         Turma turma = null;
@@ -145,7 +210,7 @@ public class TurmaDAO {
         stmt.setInt(2, turma.getDisciplinaId());
         stmt.setInt(3, turma.getAlunoId());
         stmt.setDouble(4, turma.getNota());
-        stmt.setInt(5, turma.getId() );
+        stmt.setInt(5, turma.getId());
 
         int rowsAffected = stmt.executeUpdate();
         return rowsAffected > 0;
@@ -198,6 +263,33 @@ public class TurmaDAO {
         int rowsAffected = stmt.executeUpdate();
         return rowsAffected > 0;
 
+    }
+
+    public List<Turma> getTurmasByAlunoId(int alunoId) throws SQLException {
+        List<Turma> turmas = new ArrayList<>();
+        Conexao conexao = new Conexao();
+
+        String sql = "SELECT * FROM turmas WHERE aluno_id = ?";
+        PreparedStatement stmt = conexao.getConexao().prepareStatement(sql);
+        stmt.setInt(1, alunoId);
+
+        ResultSet resultado = stmt.executeQuery();
+
+        if (resultado != null) {
+            while (resultado.next()) {
+                Turma turma = new Turma();
+                turma.setId(resultado.getInt("id"));
+                turma.setProfessorId(resultado.getInt("professor_id"));
+                turma.setDisciplinaId(resultado.getInt("disciplina_id"));
+                turma.setAlunoId(resultado.getInt("aluno_id"));
+                turma.setCodigoTurma(resultado.getString("codigo_turma"));
+                turma.setNota(resultado.getInt("nota"));
+
+                turmas.add(turma);
+            }
+        }
+
+        return turmas;
     }
 
 }

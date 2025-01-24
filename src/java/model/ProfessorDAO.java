@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ProfessorDAO {
-    
+
     public ArrayList<Professor> getProfessorAll() throws SQLException {
         ArrayList<Professor> resultProfessor = new ArrayList<>();
         Conexao conexao = new Conexao();
@@ -90,9 +90,35 @@ public class ProfessorDAO {
         stmt.setString(3, professor.getCpf());
         stmt.setString(4, professor.getSenha());
 
-
         int rowsAffected = stmt.executeUpdate();
         return rowsAffected > 0;
     }
-    
+
+public Professor getProfessorByCpfSenha(Professor professor) throws SQLException {
+    Conexao conexao = new Conexao();
+    Professor professorObtido = null;
+    String sql = "SELECT * FROM professores WHERE cpf = ? AND senha = ?";
+
+    // Usando try-with-resources para garantir o fechamento do Statement e ResultSet
+    try (PreparedStatement stmt = conexao.getConexao().prepareStatement(sql)) {
+        stmt.setString(1, professor.getCpf());
+        stmt.setString(2, professor.getSenha());
+        
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                professorObtido = new Professor();
+                professorObtido.setId(rs.getInt("id"));
+                professorObtido.setNome(rs.getString("nome"));
+                professorObtido.setEmail(rs.getString("email"));
+            }
+        }
+    } catch (SQLException e) {
+        // Tratamento de erro
+        throw new RuntimeException("Falha na query para logar professor: " + e.getMessage(), e);
+    }
+
+    return professorObtido;
+}
+
+
 }
